@@ -6,37 +6,37 @@ using Xunit;
 
 namespace PizzaBox.Testing.Tests
 {
-  public class MappingTests
-  {
-
-    [Fact]
-    public void Test_CrustMapping()
+    public class MappingTests
     {
-      // arrange
-      MapperCrust mapperCrust = new MapperCrust();
-      var sut = new DeepDishCrust();
 
-      // act
-      //var sut2 = mapperCrust.Map(sut);
-      //var actual = sut2.CRUST;
+        [Fact]
+        public void Test_CrustMapping()
+        {
+            // arrange
+            MapperCrust mapperCrust = new MapperCrust();
+            var sut = new DeepDishCrust();
 
-      // assert
-      //Assert.True(actual == CRUSTS.DEEPDISH);
+            // act
+            //var sut2 = mapperCrust.Map(sut);
+            //var actual = sut2.CRUST;
+
+            // assert
+            //Assert.True(actual == CRUSTS.DEEPDISH);
+        }
+
+        [Fact]
+        public void Test_PizzaMapping()
+        {
+            // arrange
+            MapperPizza mapperPizza = new MapperPizza();
+            var sut = new MeatPizza();
+
+            // act
+            //var sut2 = mapperPizza.Map(sut);
+            //var actual = sut2.DBSize.Price;
+
+            // assert
+            //Assert.True(actual == (decimal)8m);
+        }
     }
-
-    [Fact]
-    public void Test_PizzaMapping()
-    {
-      // arrange
-      MapperPizza mapperPizza = new MapperPizza();
-      var sut = new MeatPizza();
-
-      // act
-      //var sut2 = mapperPizza.Map(sut);
-      //var actual = sut2.DBSize.Price;
-
-      // assert
-      //Assert.True(actual == (decimal)8m);
-    }
-  }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace PizzaBoxService
+namespace PizzaBox.Api
 {
     public class WeatherForecast
     {

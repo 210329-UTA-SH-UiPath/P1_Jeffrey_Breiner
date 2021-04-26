@@ -2,12 +2,13 @@ using PizzaBox.Domain.Models.Components;
 
 namespace PizzaBox.Domain.Models.Crusts
 {
-  public class ThinCrust : Crust
-  {
-    public ThinCrust()
+    public class ThinCrust : ACrust
     {
-      Name = "Thin Crust";
-      Price = 1m;
+        public ThinCrust()
+        {
+            Name = "Thin Crust";
+            Price = 1m;
+            CRUST = CRUSTS.THIN;
+        }
     }
-  }
 }

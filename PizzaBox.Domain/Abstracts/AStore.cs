@@ -3,31 +3,39 @@ using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Domain.Abstracts
 {
-  /// <summary>
-  /// Represents the Store Abstract Class
-  /// </summary>
-  [XmlInclude(typeof(ChicagoStore))]
-  [XmlInclude(typeof(NewYorkStore))]
-  public class AStore
-  {
-    public string Name { get; set; }
-    public int ID { get; set; }
-
     /// <summary>
-    /// 
+    /// Enum containing all stores.
     /// </summary>
-    protected AStore()
+    public enum STORES
     {
-      ID = -1;
+        NEWYORK,
+        CHICAGO
     }
 
     /// <summary>
-    /// 
+    /// Represents the Store Abstract Class
     /// </summary>
-    /// <returns></returns>
-    public override string ToString()
+    public abstract class AStore
     {
-      return $"{Name}";
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public STORES STORE { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected AStore()
+        {
+            ID = -1;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
     }
-  }
 }

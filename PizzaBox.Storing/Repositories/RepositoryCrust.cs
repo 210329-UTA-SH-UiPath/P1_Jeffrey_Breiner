@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using PizzaBox.Domain.Models.Components;
 using PizzaBox.Storing.Entities;
 using PizzaBox.Storing.Entities.EntityModels;
@@ -7,61 +8,59 @@ using PizzaBox.Storing.Mappers;
 
 namespace PizzaBox.Storing.Repositories
 {
-  public class RepositoryCrust : IRepository<Crust>
-  {
-    public readonly PizzaDbContext context;
-    public readonly MapperCrust mapperCrust = new MapperCrust();
-
-    public RepositoryCrust(PizzaDbContext context)
+    public class RepositoryCrust : IRepository<ACrust>
     {
-      this.context = context;
+        public readonly PizzaDbContext context;
+        public readonly MapperCrust mapperCrust = new MapperCrust();
+
+        public RepositoryCrust(PizzaDbContext context)
+        {
+            this.context = context;
+        }
+
+        public void Add(ACrust genericType)
+        {
+            context.DBCrusts.Add(mapperCrust.Map(genericType, context));
+            context.SaveChanges();
+            context.ChangeTracker.Clear();
+        }
+
+        /// <returns></returns>
+        public List<ACrust> GetList()
+        {
+            return context.DBCrusts.AsNoTracking().Select(mapperCrust.Map).ToList();
+        }
+
+        public ACrust GetById(int id)
+        {
+            var dbCrust = context.DBCrusts.AsNoTracking().FirstOrDefault(crust => crust.ID == id);
+
+            if (dbCrust is null)
+            {
+                return null;
+            }
+
+            return mapperCrust.Map(dbCrust);
+        }
+
+        public void Remove(int id)
+        {
+            DBCrust crust = context.DBCrusts.FirstOrDefault(crust => crust.ID == id);
+
+            if (crust is not null)
+            {
+                context.Remove(crust);
+                context.SaveChanges();
+                context.ChangeTracker.Clear();
+            }
+        }
+
+        public ACrust Update(ACrust updatedType)
+        {
+            DBCrust dBCrust = mapperCrust.Map(updatedType, context);
+            context.SaveChanges();
+            context.ChangeTracker.Clear();
+            return mapperCrust.Map(dBCrust);
+        }
     }
-
-    public void Add(Crust genericType)
-    {
-      context.DBCrusts.Add(mapperCrust.Map(genericType, context));
-      context.SaveChanges();
-    }
-
-    /// <summary>
-    /// This is coding wizardry.
-    /// Google says it works.
-    /// It does work.
-    /// I didn't question it.
-    /// It is a workaround for storing enums as uniques in the db.
-    /// </summary>
-    /// <returns></returns>
-    public List<Crust> GetList()
-    {
-      List<Crust> crusts = new List<Crust>();
-      context.DBCrusts.AsEnumerable().GroupBy(crust => crust.CRUST).Select(crust => crust.First()).ToList().ForEach(crust => crusts.Add(mapperCrust.Map(crust)));
-      return crusts;
-    }
-
-    public void Remove(Crust genericType)
-    {
-      DBCrust dBCrust = mapperCrust.Map(genericType, context);
-      DBCrust crust = context.DBCrusts.ToList().Find(crust => crust.CRUST == dBCrust.CRUST);
-
-      if (crust is not null)
-      {
-        context.Remove(crust);
-        context.SaveChanges();
-      }
-    }
-
-    public void update(Crust existingType, Crust updatedType)
-    {
-      DBCrust dBCrust = mapperCrust.Map(existingType, context);
-      DBCrust crust = context.DBCrusts.ToList().Find(crust => crust.CRUST == dBCrust.CRUST);
-
-      if (crust is not null)
-      {
-        DBCrust EntityMapped = mapperCrust.Map(updatedType, context);
-        crust.CRUST = EntityMapped.CRUST;
-        crust.Price = EntityMapped.Price;
-        context.SaveChanges();
-      }
-    }
-  }
 }

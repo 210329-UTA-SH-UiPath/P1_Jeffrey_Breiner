@@ -7,72 +7,72 @@ using PizzaBox.Storing.Entities.EntityModels;
 
 namespace PizzaBox.Storing.Mappers
 {
-  public class MapperSize : IMapper<Size, DBSize>
-  {
-    /// <summary>
-    /// Map DBSize => Size
-    /// Uses enum to determine which size class to return.
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
-    public Size Map(DBSize entity)
+    public class MapperSize : IMapper<ASize, DBSize>
     {
-      Size size = null;
+        /// <summary>
+        /// Map DBSize => Size
+        /// Uses enum to determine which size class to return.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public ASize Map(DBSize entity)
+        {
+            ASize size = null;
 
-      switch (entity.SIZE)
-      {
-        case Entities.EntityModels.SIZES.SMALL:
-          size = new SmallSize();
-          break;
-        case Entities.EntityModels.SIZES.MEDIUM:
-          size = new MediumSize();
-          break;
-        case Entities.EntityModels.SIZES.LARGE:
-          size = new LargeSize();
-          break;
-        default:
-          throw new ArgumentException("Size not recognized. Size could not be mapped properly");
-      }
+            switch (entity.SIZE)
+            {
+                case SIZES.SMALL:
+                    size = new SmallSize();
+                    break;
+                case SIZES.MEDIUM:
+                    size = new MediumSize();
+                    break;
+                case SIZES.LARGE:
+                    size = new LargeSize();
+                    break;
+                default:
+                    throw new ArgumentException("Size not recognized. Size could not be mapped properly");
+            }
 
-      size.ID = entity.ID;
-      return size;
+            size.ID = entity.ID;
+            return size;
+        }
+
+        /// <summary>
+        /// Map Size => DBSize
+        /// Sets enum bassed off what size class was passed into it.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public DBSize Map(ASize model, PizzaDbContext context)
+        {
+            DBSize dBSize = new DBSize();
+            SIZES SIZE;
+
+            switch (model)
+            {
+                case SmallSize:
+                    SIZE = SIZES.SMALL;
+                    break;
+                case MediumSize:
+                    SIZE = SIZES.MEDIUM;
+                    break;
+                case LargeSize:
+                    SIZE = SIZES.LARGE;
+                    break;
+                default:
+                    throw new ArgumentException("Size type not recognized. Size could not be mapped properly");
+            }
+
+            var dbSize = context.DBSizes.FirstOrDefault(size => size.SIZE == SIZE);
+            if (dbSize is not null)
+            {
+                return dbSize;
+            }
+
+            dBSize.SIZE = SIZE;
+            dBSize.Price = model.Price;
+            return dBSize;
+        }
     }
-
-    /// <summary>
-    /// Map Size => DBSize
-    /// Sets enum bassed off what size class was passed into it.
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    public DBSize Map(Size model, PizzaDbContext context)
-    {
-      DBSize dBSize = new DBSize();
-      Entities.EntityModels.SIZES SIZE;
-
-      switch (model)
-      {
-        case SmallSize:
-          SIZE = Entities.EntityModels.SIZES.SMALL;
-          break;
-        case MediumSize:
-          SIZE = Entities.EntityModels.SIZES.MEDIUM;
-          break;
-        case LargeSize:
-          SIZE = Entities.EntityModels.SIZES.LARGE;
-          break;
-        default:
-          throw new ArgumentException("Size type not recognized. Size could not be mapped properly");
-      }
-
-      var dbSize = context.DBSizes.FirstOrDefault(size => size.SIZE == SIZE);
-      if (dbSize is not null)
-      {
-        return dbSize;
-      }
-
-      dBSize.SIZE = SIZE;
-      dBSize.Price = model.Price;
-      return dBSize;
-    }
-  }
 }

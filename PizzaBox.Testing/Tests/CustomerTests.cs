@@ -4,34 +4,34 @@ using Xunit;
 
 namespace PizzaBox.Testing.Tests
 {
-  public class CustomerTests
-  {
-    [Fact]
-    public void Test_Customer()
+    public class CustomerTests
     {
-      // arrange
-      var sut = new Customer();
+        [Fact]
+        public void Test_Customer()
+        {
+            // arrange
+            var sut = new Customer();
 
-      // act
-      sut.Name = "yes";
-      var actual = sut.Name;
+            // act
+            sut.Name = "yes";
+            var actual = sut.Name;
 
-      // assert
-      Assert.Equal(actual, "yes");
+            // assert
+            Assert.Equal(actual, "yes");
+        }
+
+        [Fact]
+        public void Test_Customer2()
+        {
+            // arrange
+            var sut = new Customer();
+
+            // act
+            sut.Name = "BOGGLE!";
+            var actual = sut.Name;
+
+            // assert
+            Assert.Equal(actual, "BOGGLE!");
+        }
     }
-
-    [Fact]
-    public void Test_Customer2()
-    {
-      // arrange
-      var sut = new Customer();
-
-      // act
-      sut.Name = "BOGGLE!";
-      var actual = sut.Name;
-
-      // assert
-      Assert.Equal(actual, "BOGGLE!");
-    }
-  }
 }

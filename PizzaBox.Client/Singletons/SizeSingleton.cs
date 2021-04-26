@@ -4,38 +4,38 @@ using PizzaBox.Domain.Models.Sizes;
 
 namespace PizzaBox.Client.Singletons
 {
-  /// <summary>
-  /// 
-  /// </summary>
-  public class SizeSingleton
-  {
-    private static SizeSingleton _instance;
-
-    public List<Size> Sizes { get; set; }
-    public static SizeSingleton Instance
-    {
-      get
-      {
-        if (_instance == null)
-        {
-          _instance = new SizeSingleton();
-        }
-
-        return _instance;
-      }
-    }
-
     /// <summary>
     /// 
     /// </summary>
-    private SizeSingleton()
+    public class SizeSingleton
     {
-      Sizes = new List<Size>()
+        private static SizeSingleton _instance;
+
+        public List<ASize> Sizes { get; set; }
+        public static SizeSingleton Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new SizeSingleton();
+                }
+
+                return _instance;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private SizeSingleton()
+        {
+            Sizes = new List<ASize>()
       {
         new SmallSize(),
         new MediumSize(),
         new LargeSize()
       };
+        }
     }
-  }
 }

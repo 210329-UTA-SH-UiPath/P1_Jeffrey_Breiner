@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Storing.Entities;
 using PizzaBox.Storing.Entities.EntityModels;
@@ -7,51 +8,57 @@ using PizzaBox.Storing.Mappers;
 
 namespace PizzaBox.Storing.Repositories
 {
-  public class RepositoryStore : IRepository<AStore>
-  {
-    public readonly PizzaDbContext context;
-    public readonly MapperStore mapperStore = new MapperStore();
-
-    public RepositoryStore(PizzaDbContext context)
+    public class RepositoryStore : IRepository<AStore>
     {
-      this.context = context;
+        public readonly PizzaDbContext context;
+        public readonly MapperStore mapperStore = new MapperStore();
+
+        public RepositoryStore(PizzaDbContext context)
+        {
+            this.context = context;
+        }
+
+        public void Add(AStore genericType)
+        {
+            context.Add(mapperStore.Map(genericType, context));
+            context.SaveChanges();
+            context.ChangeTracker.Clear();
+        }
+
+        public List<AStore> GetList()
+        {
+            return context.DBStores.AsNoTracking().Select(mapperStore.Map).ToList();
+        }
+
+        public AStore GetById(int id)
+        {
+            var dbStore = context.DBStores.AsNoTracking().FirstOrDefault(store => store.ID == id);
+
+            if (dbStore is null)
+            {
+                return null;
+            }
+
+            return mapperStore.Map(dbStore);
+        }
+
+        public void Remove(int id)
+        {
+            DBStore existingStore = context.DBStores.ToList().Find(store => store.ID == id);
+
+            if (existingStore is not null)
+            {
+                context.Remove(existingStore);
+                context.SaveChanges();
+                context.ChangeTracker.Clear();
+            }
+        }
+
+        public AStore Update(AStore updated)
+        {
+            var dBStore = mapperStore.Map(updated, context);
+            context.SaveChanges();
+            return mapperStore.Map(dBStore);
+        }
     }
-
-    public void Add(AStore genericType)
-    {
-      context.Add(mapperStore.Map(genericType, context));
-      context.SaveChanges();
-    }
-
-    public List<AStore> GetList()
-    {
-      List<AStore> aStores = new List<AStore>();
-      context.DBStores.AsEnumerable().GroupBy(store => store.Name).Select(store => store.First()).ToList().ForEach(store => aStores.Add(mapperStore.Map(store)));
-      return aStores;
-    }
-
-    public void Remove(AStore genericType)
-    {
-      DBStore existingStore = context.DBStores.ToList().Find(store => store.Name.Equals(genericType.Name));
-
-      if (existingStore is not null)
-      {
-        context.Remove(existingStore);
-        context.SaveChanges();
-      }
-    }
-
-    public void update(AStore existingType, AStore updatedType)
-    {
-      DBStore existingStore = context.DBStores.ToList().Find(store => store.Name.Equals(existingType.Name));
-
-      if (existingStore is not null)
-      {
-        DBStore EntityMapped = mapperStore.Map(updatedType, context);
-        existingStore.Name = EntityMapped.Name;
-        existingStore.STORE = EntityMapped.STORE;
-        context.SaveChanges();
-      }
-    }
-  }
 }

@@ -6,28 +6,29 @@ using PizzaBox.Domain.Models.Toppings;
 
 namespace PizzaBox.Domain.Models.Pizzas
 {
-  /// <summary>
-  /// 
-  /// </summary>
-  public class VeganPizza : APizza
-  {
-    public VeganPizza()
+    /// <summary>
+    /// 
+    /// </summary>
+    public class VeganPizza : APizza
     {
-      Name = "Vegan (Abomination) Pizza";
-    }
-    public override void AddCrust()
-    {
-      Crust = new ThinCrust();
-    }
+        public VeganPizza()
+        {
+            Name = "Vegan (Abomination) Pizza";
+            PIZZA = PIZZAS.VEGAN;
+        }
+        public override void AddCrust()
+        {
+            Crust = new ThinCrust();
+        }
 
-    public override void AddSize()
-    {
-      Size = new SmallSize();
-    }
+        public override void AddSize()
+        {
+            Size = new SmallSize();
+        }
 
-    public override void AddToppings()
-    {
-      Toppings.AddRange(new Topping[] { new NoCheese(), new GreenPepper(), new RedPepper() });
+        public override void AddToppings()
+        {
+            Toppings.AddRange(new ATopping[] { new NoCheese(), new GreenPepper(), new RedPepper() });
+        }
     }
-  }
 }

@@ -3,25 +3,25 @@ using Xunit;
 
 namespace PizzaBox.Testing.Tests
 {
-  /// <summary>
-  /// 
-  /// </summary>
-  public class StoreTests
-  {
     /// <summary>
     /// 
     /// </summary>
-    [Fact]
-    public void Test_StoreName()
+    public class StoreTests
     {
-      // arrange
-      var sut = new ChicagoStore();
+        /// <summary>
+        /// 
+        /// </summary>
+        [Fact]
+        public void Test_StoreName()
+        {
+            // arrange
+            var sut = new ChicagoStore();
 
-      // act
-      var actual = sut.Name;
+            // act
+            var actual = sut.Name;
 
-      // assert
-      Assert.True(actual == "Chicago Store");
+            // assert
+            Assert.True(actual == "Chicago Store");
+        }
     }
-  }
 }

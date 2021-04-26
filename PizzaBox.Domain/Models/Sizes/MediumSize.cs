@@ -2,12 +2,13 @@ using PizzaBox.Domain.Models.Components;
 
 namespace PizzaBox.Domain.Models.Sizes
 {
-  public class MediumSize : Size
-  {
-    public MediumSize()
+    public class MediumSize : ASize
     {
-      Name = "Medium";
-      Price = 8m;
+        public MediumSize()
+        {
+            Name = "Medium";
+            Price = 8m;
+            SIZE = SIZES.MEDIUM;
+        }
     }
-  }
 }

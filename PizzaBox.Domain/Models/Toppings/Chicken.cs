@@ -2,12 +2,13 @@ using PizzaBox.Domain.Models.Components;
 
 namespace PizzaBox.Domain.Models.Toppings
 {
-  public class Chicken : Topping
-  {
-    public Chicken()
+    public class Chicken : ATopping
     {
-      Name = "Chicken";
-      Price = 0.5m;
+        public Chicken()
+        {
+            Name = "Chicken";
+            Price = 0.5m;
+            TOPPING = TOPPINGS.CHICKEN;
+        }
     }
-  }
 }

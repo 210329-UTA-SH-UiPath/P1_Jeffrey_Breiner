@@ -11,7 +11,7 @@ namespace PizzaBox.Client.Singletons
   {
     private static ToppingSingleton _instance;
 
-    public List<Topping> Toppings { get; set; }
+    public List<ATopping> Toppings { get; set; }
     public static ToppingSingleton Instance
     {
       get
@@ -30,7 +30,7 @@ namespace PizzaBox.Client.Singletons
     /// </summary>
     private ToppingSingleton()
     {
-      Toppings = new List<Topping>()
+      Toppings = new List<ATopping>()
       {
         new NoChoice(),
         new Bacon(),

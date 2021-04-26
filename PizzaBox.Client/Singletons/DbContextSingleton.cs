@@ -2,35 +2,35 @@ using PizzaBox.Storing.Entities;
 
 namespace PizzaBox.Client.Singletons
 {
-  public class DbContextSingleton
-  {
-    private readonly PizzaDbContext context = null;
-    private static DbContextSingleton _instance = null;
-
-    public static DbContextSingleton Instance
+    public class DbContextSingleton
     {
-      get
-      {
-        if (_instance == null)
+        private readonly PizzaDbContext context = null;
+        private static DbContextSingleton _instance = null;
+
+        public static DbContextSingleton Instance
         {
-          _instance = new DbContextSingleton();
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new DbContextSingleton();
+                }
+
+                return _instance;
+            }
         }
 
-        return _instance;
-      }
-    }
+        public PizzaDbContext Context
+        {
+            get
+            {
+                return context;
+            }
+        }
 
-    public PizzaDbContext Context
-    {
-      get
-      {
-        return context;
-      }
+        private DbContextSingleton()
+        {
+            context = new PizzaDbContext();
+        }
     }
-
-    private DbContextSingleton()
-    {
-      context = new PizzaDbContext();
-    }
-  }
 }

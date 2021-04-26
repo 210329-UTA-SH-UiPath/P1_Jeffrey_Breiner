@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PizzaBoxService.Controllers
+namespace PizzaBox.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
