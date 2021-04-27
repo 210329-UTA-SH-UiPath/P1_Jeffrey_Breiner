@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PizzaBox.Domain.Models;
+using System.Configuration;
 using PizzaBox.Storing.Entities.EntityModels;
 using PizzaBox.Storing.Mappers;
 
@@ -10,7 +11,11 @@ namespace PizzaBox.Storing.Entities
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=tcp:project0dbserver.database.windows.net,1433;Initial Catalog=Project0DB;User ID=jeffreybreiner;Password=Wouldyouliketomakeawallet1;");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["PizzaBox"].ConnectionString);
+            }
+
         }
         public DbSet<DBStore> DBStores { get; set; }
         public DbSet<DBCustomer> DBCustomers { get; set; }

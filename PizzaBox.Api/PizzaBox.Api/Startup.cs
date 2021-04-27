@@ -2,11 +2,17 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PizzaBox.Domain.Abstracts;
+using PizzaBox.Domain.Models;
+using PizzaBox.Domain.Models.Components;
+using PizzaBox.Storing.Entities;
+using PizzaBox.Storing.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +34,16 @@ namespace PizzaBox.Api
         {
 
             services.AddControllers();
+            services.AddDbContext<PizzaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PizzaBox")));
+
+            services.AddScoped<IRepository<ACrust>, RepositoryCrust>();
+            services.AddScoped<IRepository<Customer>, RepositoryCustomer>();
+            services.AddScoped<IRepository<Order>, RepositoryOrder>();
+            services.AddScoped<IRepository<APizza>, RepositoryPizza>();
+            services.AddScoped<IRepository<ASize>, RepositorySize>();
+            services.AddScoped<IRepository<AStore>, RepositoryStore>();
+            services.AddScoped<IRepository<ATopping>, RepositoryTopping>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PizzaBox.Api", Version = "v1" });
