@@ -21,34 +21,86 @@ namespace PizzaBox.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Order> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Order> Get()
         {
-            return repository.GetList();
+            try
+            {
+                return Ok(repository.GetList());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
         }
 
-        [HttpGet("{id}")]
-        public Order Get(int id)
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Order> Get(int id)
         {
-            return repository.GetById(id);
+            try
+            {
+                return Ok(repository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                return NotFound($"The order by id - {id} does not exist");
+            }
         }
 
         [HttpPost]
-        public void Post([FromBody] Order order)
+        public IActionResult Post([FromBody] Order order)
         {
-            repository.Add(order);
+            if (order == null)
+            {
+                return BadRequest("The order you are trying to add is empty");
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    repository.Add(order);
+                    return CreatedAtAction(nameof(Get), new { id = order.ID }, order);
+                }
+            }
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Order order)
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Put(int id, [FromBody] Order order)
         {
-            order.ID = id;
-            repository.Update(order);
+            if (order == null)
+            {
+                return NoContent();
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    order.ID = id;
+                    repository.Update(order);
+                    return CreatedAtAction(nameof(Get), new { id = order.ID }, order);
+                }
+            }
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Delete(int id)
         {
             repository.Remove(id);
+            return Ok();
         }
     }
 }

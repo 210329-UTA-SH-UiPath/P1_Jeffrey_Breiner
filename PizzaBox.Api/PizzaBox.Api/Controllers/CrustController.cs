@@ -21,34 +21,86 @@ namespace PizzaBox.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ACrust> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<ACrust> Get()
         {
-            return repository.GetList();
+            try
+            {
+                return Ok(repository.GetList());
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
         }
 
-        [HttpGet("{id}")]
-        public ACrust Get(int id)
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<ACrust> Get(int id)
         {
-            return repository.GetById(id);
+            try
+            {
+                return Ok(repository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                return NotFound($"The crust by id - {id} does not exist");
+            }
         }
 
         [HttpPost]
-        public void Post([FromBody] ACrust crust)
+        public IActionResult Post([FromBody] ACrust crust)
         {
-            repository.Add(crust);
+            if (crust == null)
+            {
+                return BadRequest("The crust you are trying to add is empty");
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    repository.Add(crust);
+                    return CreatedAtAction(nameof(Get), new { id = crust.ID }, crust);
+                }
+            }
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] ACrust crust)
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Put(int id, [FromBody] ACrust crust)
         {
-            crust.ID = id;
-            repository.Update(crust);
+            if (crust == null)
+            {
+                return NoContent();
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    crust.ID = id;
+                    repository.Update(crust);
+                    return CreatedAtAction(nameof(Get), new { id = crust.ID }, crust);
+                }
+            }
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Delete(int id)
         {
             repository.Remove(id);
+            return Ok();
         }
     }
 }

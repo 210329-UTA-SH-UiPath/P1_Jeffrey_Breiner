@@ -1,0 +1,27 @@
+﻿@model PizzaBox.FrontEnd.Models.FECustomer
+
+@{
+    ViewData["Title"] = "Enter Customer Name";
+}
+
+<h1>Enter Customer Name</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("CheckCustomerName", "FECustomer", FormMethod.Post))
+        {
+            <label asp-for="Name" class="control-label"></label>
+            <br />
+            @Html.TextBoxFor(m => m.Name)
+            <br />
+            <br />
+            <input type="submit" value="Create" class="btn btn-primary" />
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

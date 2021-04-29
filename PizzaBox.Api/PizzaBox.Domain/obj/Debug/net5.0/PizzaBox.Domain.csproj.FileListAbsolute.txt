@@ -1,0 +1,12 @@
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\bin\Debug\net5.0\PizzaBox.Domain.deps.json
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\bin\Debug\net5.0\PizzaBox.Domain.dll
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\bin\Debug\net5.0\ref\PizzaBox.Domain.dll
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\bin\Debug\net5.0\PizzaBox.Domain.pdb
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\obj\Debug\net5.0\PizzaBox.Domain.csprojAssemblyReference.cache
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\obj\Debug\net5.0\PizzaBox.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\obj\Debug\net5.0\PizzaBox.Domain.AssemblyInfoInputs.cache
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\obj\Debug\net5.0\PizzaBox.Domain.AssemblyInfo.cs
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\obj\Debug\net5.0\PizzaBox.Domain.csproj.CoreCompileInputs.cache
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\obj\Debug\net5.0\PizzaBox.Domain.dll
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\obj\Debug\net5.0\ref\PizzaBox.Domain.dll
+C:\Users\jeffr\revature\project_pizzabox_v2\P1_Jeffrey_Breiner\PizzaBox.Api\PizzaBox.Domain\obj\Debug\net5.0\PizzaBox.Domain.pdb

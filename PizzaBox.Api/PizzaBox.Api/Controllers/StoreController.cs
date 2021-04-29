@@ -21,34 +21,86 @@ namespace PizzaBox.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<AStore> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<AStore> Get()
         {
-            return repository.GetList();
+            try
+            {
+                return Ok(repository.GetList());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
         }
 
-        [HttpGet("{id}")]
-        public AStore Get(int id)
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<AStore> Get(int id)
         {
-            return repository.GetById(id);
+            try
+            {
+                return Ok(repository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                return NotFound($"The store by id - {id} does not exist");
+            }
         }
 
         [HttpPost]
-        public void Post([FromBody] AStore store)
+        public IActionResult Post([FromBody] AStore store)
         {
-            repository.Add(store);
+            if (store == null)
+            {
+                return BadRequest("The store you are trying to add is empty");
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    repository.Add(store);
+                    return CreatedAtAction(nameof(Get), new { id = store.ID }, store);
+                }
+            }
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] AStore store)
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Put(int id, [FromBody] AStore store)
         {
-            store.ID = id;
-            repository.Update(store);
+            if (store == null)
+            {
+                return NoContent();
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    store.ID = id;
+                    repository.Update(store);
+                    return CreatedAtAction(nameof(Get), new { id = store.ID }, store);
+                }
+            }
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Delete(int id)
         {
             repository.Remove(id);
+            return Ok();
         }
     }
 }

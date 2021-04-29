@@ -1,0 +1,6 @@
+﻿@model PizzaBox.Client.Models.FEOrderHolding
+
+<form asp-controller="FEPizza" asp-action="PizzaSizeSelected" method="post">
+    <select asp-for="SIZE" asp-items="ViewBag.SIZE"></select>
+    <input type="submit" value="Select Size" class="btn btn-primary"/>
+</form>

@@ -1,0 +1,78 @@
+﻿@model PizzaBox.FrontEnd.Models.FEOrder
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Pizza Type
+            </th>
+            <th>
+                Crust
+            </th>
+            <th>
+                Size
+            </th>
+            <th>
+                Toppings
+            </th>
+            <th>
+                Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Pizza.Count; i++)
+        {
+            var item = Model.Pizza[i];
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Crust.Name
+                </td>
+                <td>
+                    @item.Size.Name
+                </td>
+                <td>
+                    @{
+                        var str = "";
+                        item.Toppings.ForEach(t => str += t.ToString() + ", ");
+                        if (str.Length > 1)
+                        {
+                            str = str.Remove(str.Length - 2, 2);
+                        }
+                    }
+                    @str
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @Html.ActionLink("Remove", "Remove", "Pizza", new { Index = i })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.ActionLink("Order a Meat Pizza", "PlaceOrderWithMeat", "FEOrder")
+
+@{
+    if (Model.Pizza.Count > 0 && Model.Pizza.Count <= 50)
+    {
+        @Html.ActionLink("Place Order", "PlaceOrder", "Order")
+    }
+}
+
+@if (Model.Pizza.Count < 50)
+{
+    @Html.ActionLink("Add Pizza", "SelectPizzaType", "FEPizza")
+}
+
+<div>
+    <label>Total Price: @Model.priceTotal</label>
+    <br />
+</div>

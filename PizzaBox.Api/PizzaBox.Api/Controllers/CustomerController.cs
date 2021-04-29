@@ -21,34 +21,86 @@ namespace PizzaBox.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Customer> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Customer> Get()
         {
-            return repository.GetList();
+            try
+            {
+                return Ok(repository.GetList());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
         }
 
-        [HttpGet("{id}")]
-        public Customer Get(int id)
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Customer> Get(int id)
         {
-            return repository.GetById(id);
+            try
+            {
+                return Ok(repository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                return NotFound($"The customer by id - {id} does not exist");
+            }
         }
 
         [HttpPost]
-        public void Post([FromBody] Customer customer)
+        public IActionResult Post([FromBody] Customer customer)
         {
-            repository.Add(customer);
+            if (customer == null)
+            {
+                return BadRequest("The customer you are trying to add is empty");
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    repository.Add(customer);
+                    return CreatedAtAction(nameof(Get), new { id = customer.ID }, customer);
+                }
+            }
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Customer customer)
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Put(int id, [FromBody] Customer customer)
         {
-            customer.ID = id;
-            repository.Update(customer);
+            if (customer == null)
+            {
+                return NoContent();
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    customer.ID = id;
+                    repository.Update(customer);
+                    return CreatedAtAction(nameof(Get), new { id = customer.ID }, customer);
+                }
+            }
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Delete(int id)
         {
             repository.Remove(id);
+            return Ok();
         }
     }
 }

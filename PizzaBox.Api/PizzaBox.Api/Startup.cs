@@ -1,3 +1,4 @@
+using JsonSubTypes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +12,10 @@ using Microsoft.OpenApi.Models;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 using PizzaBox.Domain.Models.Components;
+using PizzaBox.Domain.Models.Crusts;
+using PizzaBox.Domain.Models.Pizzas;
+using PizzaBox.Domain.Models.Sizes;
+using PizzaBox.Domain.Models.Toppings;
 using PizzaBox.Storing.Entities;
 using PizzaBox.Storing.Repositories;
 using System;
@@ -43,6 +48,58 @@ namespace PizzaBox.Api
             services.AddScoped<IRepository<ASize>, RepositorySize>();
             services.AddScoped<IRepository<AStore>, RepositoryStore>();
             services.AddScoped<IRepository<ATopping>, RepositoryTopping>();
+
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
+                    .Of<ACrust>("CRUSTS") // type property is only defined here
+                    .RegisterSubtype<DeepDishCrust>(CRUSTS.DEEPDISH)
+                    .RegisterSubtype<StandardCrust>(CRUSTS.STANDARD)
+                    .RegisterSubtype<StuffedCrust>(CRUSTS.STUFFED)
+                    .RegisterSubtype<ThinCrust>(CRUSTS.THIN)
+                    .SerializeDiscriminatorProperty() // ask to serialize the type property
+                    .Build());
+
+                options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
+                    .Of<APizza>("PIZZAS")
+                    .RegisterSubtype<CustomPizza>(PIZZAS.CUSTOM)
+                    .RegisterSubtype<MeatPizza>(PIZZAS.MEAT)
+                    .RegisterSubtype<HawaiianPizza>(PIZZAS.HAWAIIAN)
+                    .RegisterSubtype<VeganPizza>(PIZZAS.VEGAN)
+                    .SerializeDiscriminatorProperty() // ask to serialize the type property
+                    .Build());
+
+                options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
+                    .Of<ASize>("SIZES")
+                    .RegisterSubtype<SmallSize>(SIZES.SMALL)
+                    .RegisterSubtype<MediumSize>(SIZES.MEDIUM)
+                    .RegisterSubtype<LargeSize>(SIZES.LARGE)
+                    .SerializeDiscriminatorProperty()
+                    .Build());
+
+                options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
+                    .Of<AStore>("STORES")
+                    .RegisterSubtype<NewYorkStore>(STORES.NEWYORK)
+                    .RegisterSubtype<ChicagoStore>(STORES.CHICAGO)
+                    .SerializeDiscriminatorProperty()
+                    .Build());
+
+                options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
+                    .Of<ATopping>("TOPPINGS")
+                    .RegisterSubtype<Bacon>(TOPPINGS.BACON)
+                    .RegisterSubtype<Chicken>(TOPPINGS.CHICKEN)
+                    .RegisterSubtype<ExtraCheese>(TOPPINGS.EXTRACHEESE)
+                    .RegisterSubtype<GreenPepper>(TOPPINGS.GREENPEPPER)
+                    .RegisterSubtype<Ham>(TOPPINGS.HAM)
+                    .RegisterSubtype<NoCheese>(TOPPINGS.NOCHEESE)
+                    .RegisterSubtype<Pineapple>(TOPPINGS.PINEAPPLE)
+                    .RegisterSubtype<RedPepper>(TOPPINGS.REDPEPPER)
+                    .RegisterSubtype<Sausage>(TOPPINGS.SAUSAGE)
+                    .SerializeDiscriminatorProperty()
+                    .Build());
+            }
+            );
 
             services.AddSwaggerGen(c =>
             {

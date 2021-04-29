@@ -1,0 +1,23 @@
+﻿@model PizzaBox.FrontEnd.Models.FEStore
+
+@{
+    ViewData["Title"] = "Select Store";
+}
+
+<h1>Select Store</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <label>Store to Order From:</label>
+        <form asp-controller="FEStore" asp-action="GetSelectedStore" method="post">
+            <select asp-for="ID" asp-items="ViewBag.Stores"></select>
+            <input type="submit" value="Choose" class="btn btn-primary"/>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

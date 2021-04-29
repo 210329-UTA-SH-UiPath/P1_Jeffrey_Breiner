@@ -21,34 +21,86 @@ namespace PizzaBox.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ASize> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<ASize> Get()
         {
-            return repository.GetList();
+            try
+            {
+                return Ok(repository.GetList());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
         }
 
-        [HttpGet("{id}")]
-        public ASize Get(int id)
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<ASize> Get(int id)
         {
-            return repository.GetById(id);
+            try
+            {
+                return Ok(repository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                return NotFound($"The size by id - {id} does not exist");
+            }
         }
 
         [HttpPost]
-        public void Post([FromBody] ASize size)
+        public IActionResult Post([FromBody] ASize size)
         {
-            repository.Add(size);
+            if (size == null)
+            {
+                return BadRequest("The size you are trying to add is empty");
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    repository.Add(size);
+                    return CreatedAtAction(nameof(Get), new { id = size.ID }, size);
+                }
+            }
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] ASize size)
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Put(int id, [FromBody] ASize size)
         {
-            size.ID = id;
-            repository.Update(size);
+            if (size == null)
+            {
+                return NoContent();
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    size.ID = id;
+                    repository.Update(size);
+                    return CreatedAtAction(nameof(Get), new { id = size.ID }, size);
+                }
+            }
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Delete(int id)
         {
             repository.Remove(id);
+            return Ok();
         }
     }
 }
