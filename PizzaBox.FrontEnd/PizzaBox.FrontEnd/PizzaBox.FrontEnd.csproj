@@ -5,8 +5,39 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\FECrust.cs" />
+    <Compile Remove="Models\FECustomer.cs" />
+    <Compile Remove="Models\FEOrder.cs" />
+    <Compile Remove="Models\FEPizza.cs" />
+    <Compile Remove="Models\FESize.cs" />
+    <Compile Remove="Models\FEStore.cs" />
+    <Compile Remove="Models\FETopping.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Models\FECrust.cs" />
+    <None Include="Models\FECustomer.cs" />
+    <None Include="Models\FEOrder.cs" />
+    <None Include="Models\FEPizza.cs" />
+    <None Include="Models\FESize.cs" />
+    <None Include="Models\FEStore.cs" />
+    <None Include="Models\FETopping.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="RestSharp" Version="106.11.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IO.Swagger\IO.Swagger.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="IO.Swagger">
+      <HintPath>..\IO.Swagger\bin\Debug\net5.0\ref\net5.0\IO.Swagger.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

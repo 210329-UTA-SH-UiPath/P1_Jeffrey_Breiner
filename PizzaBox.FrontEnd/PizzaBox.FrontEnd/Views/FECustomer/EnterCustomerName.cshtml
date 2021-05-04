@@ -1,4 +1,4 @@
-﻿@model PizzaBox.FrontEnd.Models.FECustomer
+﻿@model IO.Swagger.Model.Customer
 
 @{
     ViewData["Title"] = "Enter Customer Name";
@@ -13,10 +13,10 @@
         {
             <label asp-for="Name" class="control-label"></label>
             <br />
-            @Html.TextBoxFor(m => m.Name)
+            @Html.TextBoxFor(model => model.Name)
             <br />
             <br />
-            <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="submit" value="Enter" class="btn btn-primary" />
         }
     </div>
 </div>

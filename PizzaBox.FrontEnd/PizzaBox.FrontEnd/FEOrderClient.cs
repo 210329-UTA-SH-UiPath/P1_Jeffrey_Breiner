@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using IO.Swagger.Model;
+using Newtonsoft.Json;
 using PizzaBox.FrontEnd.Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace PizzaBox.FrontEnd
     public class FEOrderClient
     {
         static string url = "https://localhost:44368/api/";
-        static public IEnumerable<FEOrder> GetOrders()
+        static public IEnumerable<Order> GetOrders()
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri(url);
@@ -23,7 +24,7 @@ namespace PizzaBox.FrontEnd
 
             if (result.IsSuccessStatusCode)
             {
-                var readTask = result.Content.ReadAsAsync<FEOrder[]>();
+                var readTask = result.Content.ReadAsAsync<Order[]>();
                 readTask.Wait();
 
                 return readTask.Result;
@@ -34,7 +35,7 @@ namespace PizzaBox.FrontEnd
             }
         }
 
-        static public IEnumerable<FEOrder> GetOrderById(int id)
+        static public IEnumerable<Order> GetOrderById(int id)
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri(url);
@@ -45,7 +46,7 @@ namespace PizzaBox.FrontEnd
 
             if (result.IsSuccessStatusCode)
             {
-                var readTask = result.Content.ReadAsAsync<FEOrder[]>();
+                var readTask = result.Content.ReadAsAsync<Order[]>();
                 readTask.Wait();
 
                 return readTask.Result;
@@ -56,7 +57,7 @@ namespace PizzaBox.FrontEnd
             }
 
         }
-        static public bool AddOrder(FEOrder order)
+        static public bool AddOrder(Order order)
         {
             var json = JsonConvert.SerializeObject(order);
             var data = new StringContent(json, Encoding.UTF8, "application/json");

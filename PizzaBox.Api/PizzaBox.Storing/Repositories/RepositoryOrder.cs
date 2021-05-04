@@ -34,16 +34,17 @@ namespace PizzaBox.Storing.Repositories
         /// <returns></returns>
         public List<Order> GetList()
         {
-            return context.DBOrders.Include(order => order.DBCustomer).Include(order => order.DBStore).Include(order => order.Pizzas)
-              .ThenInclude(pizza => pizza.DBPlacedToppings).ThenInclude(placedTopping => placedTopping.Topping).Include(order => order.Pizzas)
-              .ThenInclude(pizza => pizza.DBSize).Include(order => order.Pizzas).ThenInclude(pizza => pizza.DBCrust).Select(mapperOrder.Map).ToList();
+            var orders = context.DBOrders.Include(order => order.DBCustomer).Include(order => order.DBStore).Include(order => order.DBPizzas)
+              .ThenInclude(pizza => pizza.DBPlacedToppings).ThenInclude(placedTopping => placedTopping.Topping).Include(order => order.DBPizzas)
+              .ThenInclude(pizza => pizza.DBSize).Include(order => order.DBPizzas).ThenInclude(pizza => pizza.DBCrust).Select(mapperOrder.Map).ToList();
+            return orders;
         }
 
         public Order GetById(int id)
         {
-            var dbOrder = context.DBOrders.Include(order => order.DBCustomer).Include(order => order.DBStore).Include(order => order.Pizzas)
-              .ThenInclude(pizza => pizza.DBPlacedToppings).ThenInclude(placedTopping => placedTopping.Topping).Include(order => order.Pizzas)
-              .ThenInclude(pizza => pizza.DBSize).Include(order => order.Pizzas).ThenInclude(pizza => pizza.DBCrust).FirstOrDefault(order => order.ID == id);
+            var dbOrder = context.DBOrders.Include(order => order.DBCustomer).Include(order => order.DBStore).Include(order => order.DBPizzas)
+              .ThenInclude(pizza => pizza.DBPlacedToppings).ThenInclude(placedTopping => placedTopping.Topping).Include(order => order.DBPizzas)
+              .ThenInclude(pizza => pizza.DBSize).Include(order => order.DBPizzas).ThenInclude(pizza => pizza.DBCrust).FirstOrDefault(order => order.ID == id);
 
             if (dbOrder is null)
             {

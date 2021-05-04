@@ -41,16 +41,16 @@ namespace PizzaBox.Storing.Mappers
                     pizza = new CustomPizza(crust, size, toppings);
                     break;
                 case PIZZAS.HAWAIIAN:
-                    pizza = new HawaiianPizza();
+                    pizza = new HawaiianPizza(mapperSize.Map(entity.DBSize));
                     break;
                 case PIZZAS.MEAT:
-                    pizza = new MeatPizza();
+                    pizza = new MeatPizza(mapperSize.Map(entity.DBSize));
                     break;
                 case PIZZAS.VEGAN:
-                    pizza = new VeganPizza();
+                    pizza = new VeganPizza(mapperSize.Map(entity.DBSize));
                     break;
                 default:
-                    throw new ArgumentException("Size not recognized. Size could not be mapped properly");
+                    throw new ArgumentException("Pizza not recognized. Pizza could not be mapped properly");
             }
 
             pizza.CalculatePrice();
@@ -66,19 +66,46 @@ namespace PizzaBox.Storing.Mappers
         /// <returns></returns>
         public DBPizza Map(APizza model, PizzaDbContext context, bool update = false)
         {
-            DBPizza dbPizza = context.DBPizzas.Include(pizza => pizza.DBCrust).Include(pizza => pizza.DBSize)
-                .Include(pizza => pizza.DBPlacedToppings).ThenInclude(placedTopping => placedTopping.Topping)
+            int tempID = model.ID;
+            ASize tempSize = model.Size;
+
+            switch (model.PIZZA)//if model is a preset pizza, throw everything away and set it to the preset
+            {
+                case PIZZAS.HAWAIIAN:
+                    model = new HawaiianPizza(tempSize);
+                    break;
+                case PIZZAS.MEAT:
+                    model = new MeatPizza(tempSize);
+                    break;
+                case PIZZAS.VEGAN:
+                    model = new VeganPizza(tempSize);
+                    break;
+                case PIZZAS.CUSTOM:
+                    break;
+                default:
+                    throw new ArgumentException("Pizza not recognized. Pizza could not be mapped properly");
+            }
+
+            model.Size = tempSize;
+            model.ID = tempID;//ensure id wasnt lost in the switch case
+
+            DBPizza dbPizza = context.DBPizzas
+                .Include(pizza => pizza.DBCrust)
+                .Include(pizza => pizza.DBSize)
+                .Include(pizza => pizza.DBPlacedToppings)
+                .ThenInclude(placedTopping => placedTopping.Topping)
                 .FirstOrDefault(pizza => pizza.ID == model.ID) ?? new DBPizza();
 
             if (dbPizza.ID != 0 && !update)
             {
                 return dbPizza;
             }
+
             dbPizza.PIZZA = model.PIZZA;
             dbPizza.DBCrust = mapperCrust.Map(model.Crust, context, update);
             dbPizza.DBSize = mapperSize.Map(model.Size, context, update);
             List<DBTopping> mappedToppings = new List<DBTopping>();
-            model.Toppings.ForEach(t => mappedToppings.Add(mapperTopping.Map(t, context, update)));
+            model.Toppings.ForEach(topping => mappedToppings.Add(mapperTopping.Map(topping, context, update)));
             dbPizza.DBPlacedToppings.Clear();
 
             foreach (var group in mappedToppings.GroupBy(topping => topping.TOPPING))
@@ -92,7 +119,7 @@ namespace PizzaBox.Storing.Mappers
 
                 DBPlacedTopping placedTopping = context.DBPlacedToppings
                     .Include(placedTopping => placedTopping.Pizza).Include(placedTopping => placedTopping.Topping)
-                    .FirstOrDefault(placedTopping => placedTopping.Pizza.ID == dbPizza.ID && 
+                    .FirstOrDefault(placedTopping => placedTopping.Pizza.ID == dbPizza.ID &&
                     placedTopping.Topping.ID == firstTopping.ID) ?? new DBPlacedTopping();
 
                 if (placedTopping.ID != 0 && !update)
@@ -105,6 +132,7 @@ namespace PizzaBox.Storing.Mappers
                 dbPizza.DBPlacedToppings.Add(placedTopping);
             }
 
+            model.CalculatePrice();
             dbPizza.Price = model.Price;
             if (dbPizza.ID == 0)
             {

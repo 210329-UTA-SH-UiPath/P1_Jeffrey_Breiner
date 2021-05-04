@@ -1,5 +1,115 @@
-﻿@model PizzaBox.FrontEnd.Models.FEOrder
+﻿@model IO.Swagger.Model.Order
 
+@{
+    if (ViewBag.ErrorMessage != null)
+    {
+        <p class="alert-warning">@ViewBag.ErrorMessage</p>
+    }
+}
+<p>
+    @*@using (Html.BeginForm("CheckCustomerName", "FECustomer", FormMethod.Post))
+        {
+            <label asp-for="Pizza" class="control-label"></label>
+            <br />
+            @{
+                List<SelectListItem> listItems = new List<SelectListItem>();
+                listItems.Add(new SelectListItem
+                {
+                    Text = "Hawaiian Pizza",
+                    Value = "PIZZAS.HAWAIIAN"
+                });
+                listItems.Add(new SelectListItem
+                {
+                    Text = "Meat Pizza",
+                    Value = "PIZZAS.MEAT",
+                    Selected = true
+                });
+                listItems.Add(new SelectListItem
+                {
+                    Text = "Vegan Pizza",
+                    Value = "PIZZAS.VEGAN"
+                });
+            }
+            @Html.DropDownList("yourDropName", listItems, new { @class = "form-control" })
+            <br />
+            <br />
+            <input type="submit" value="Enter" class="btn btn-primary" />
+        }*@
+</p>
+@using (Html.BeginForm("AddPizza", "FEOrder", FormMethod.Post))
+{
+    <h1>Pick a Pizza!</h1>
+    <div style="margin: 0.5em" class="btn-group btn-group-toggle" data-toggle="buttons">
+        @{
+            IO.Swagger.Model.PIZZAS[] pizzas = Enum.GetValues<IO.Swagger.Model.PIZZAS>();
+
+            foreach (var pizza in pizzas)
+            {
+                string name = Enum.GetName(typeof(IO.Swagger.Model.PIZZAS), pizza);
+                name = name.First().ToString().ToUpper() + name.Substring(1).ToLower();
+                <label class="btn btn-secondary" style="cursor:pointer">
+                    <input class="btn-check" type="radio" name="Pizza" id="@name" autocomplete="off" value="@pizza"> @name
+                </label>
+            }
+        }
+    </div>
+    <h1>Customize your Pizza!</h1>
+    <div style="margin: 0.5em" class="btn-group btn-group-toggle" data-toggle="buttons">
+        @{
+            IO.Swagger.Model.SIZES[] sizes = Enum.GetValues<IO.Swagger.Model.SIZES>();
+
+            foreach (var size in sizes)
+            {
+                string name = Enum.GetName(typeof(IO.Swagger.Model.SIZES), size);
+                name = name.First().ToString().ToUpper() + name.Substring(1).ToLower();
+                <label class="btn btn-secondary" style="cursor:pointer">
+                    <input class="btn-check" type="radio" name="Size" id="@name" autocomplete="off" value="@size"> @name
+                </label>
+            }
+        }
+    </div>
+    <div style="margin: 0.5em" class="btn-group btn-group-toggle" data-toggle="buttons">
+        @{
+            IO.Swagger.Model.CRUSTS[] crusts = Enum.GetValues<IO.Swagger.Model.CRUSTS>();
+
+            foreach (var crust in crusts)
+            {
+                string name = Enum.GetName(typeof(IO.Swagger.Model.CRUSTS), crust);
+                name = name.First().ToString().ToUpper() + name.Substring(1).ToLower();
+                <label class="btn btn-secondary" style="cursor:pointer">
+                    <input class="btn-check" type="radio" name="Crust" id="@name" autocomplete="off" value="@crust"> @name
+                </label>
+            }
+        }
+    </div>
+    <div style="margin: 0.5em" class="btn-group btn-group-toggle" data-toggle="buttons">
+        @{
+            IO.Swagger.Model.TOPPINGS[] toppings = Enum.GetValues<IO.Swagger.Model.TOPPINGS>();
+
+            foreach (var topping in toppings)
+            {
+                string name = Enum.GetName(typeof(IO.Swagger.Model.TOPPINGS), topping);
+                name = name.First().ToString().ToUpper() + name.Substring(1).ToLower();
+                <label class="btn btn-secondary" style="cursor:pointer">
+                    <input class="btn-check" type="checkbox" name="Topping" id="@name" autocomplete="off" value="@topping"> @name
+                </label>
+            }
+        }
+    </div>
+
+    <input type="submit" value="Add Pizza To Order" id="SubmitPizza" class="btn btn-primary" />
+}
+
+<h1>OR Pick one of our Party Packs!</h1>
+
+<p>
+    @Html.ActionLink("Vegan Party Pack", "AddHeathenPack", "FEOrder", null, new { @class = "btn btn-primary" })
+</p>
+<p>
+    @Html.ActionLink("Hawaiian Feast", "AddHawaiianFeast", "FEOrder", null, new { @class = "btn btn-primary" })
+</p>
+
+@Html.ActionLink("Place Order", "PlaceOrder", "FEOrder", null, new { @class = "btn btn-primary" })
 
 <table class="table">
     <thead>
@@ -38,41 +148,111 @@
                 </td>
                 <td>
                     @{
-                        var str = "";
-                        item.Toppings.ForEach(t => str += t.ToString() + ", ");
-                        if (str.Length > 1)
-                        {
-                            str = str.Remove(str.Length - 2, 2);
-                        }
+                        var toppingString = string.Join(", ", item.Toppings.Select(topping => topping.Name));
                     }
-                    @str
+                    @toppingString
                 </td>
                 <td>
                     @item.Price
                 </td>
                 <td>
-                    @Html.ActionLink("Remove", "Remove", "Pizza", new { Index = i })
+                    @Html.ActionLink("Remove", "Remove", "FEOrder", new { Index = i })
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-@Html.ActionLink("Order a Meat Pizza", "PlaceOrderWithMeat", "FEOrder")
-
-@{
-    if (Model.Pizza.Count > 0 && Model.Pizza.Count <= 50)
-    {
-        @Html.ActionLink("Place Order", "PlaceOrder", "Order")
-    }
-}
-
-@if (Model.Pizza.Count < 50)
-{
-    @Html.ActionLink("Add Pizza", "SelectPizzaType", "FEPizza")
-}
-
 <div>
-    <label>Total Price: @Model.priceTotal</label>
+    <label>Total Price: @Model.PriceTotal</label>
     <br />
 </div>
+<script>
+    let pizzaToppings = [];
+    pizzaToppings["Meat"] = {
+        crust: 'Stuffed',
+        toppings: []
+    };
+    pizzaToppings["Meat"].toppings.push('Bacon');
+    pizzaToppings["Meat"].toppings.push('Ham');
+    pizzaToppings["Meat"].toppings.push('Sausage');
+    pizzaToppings["Vegan"] = {
+        crust: 'Thin',
+        toppings: []
+    };
+    pizzaToppings["Vegan"].toppings.push('Nocheese');
+    pizzaToppings["Vegan"].toppings.push('Greenpepper');
+    pizzaToppings["Vegan"].toppings.push('Redpepper');
+    pizzaToppings["Hawaiian"] = {
+        crust: 'Deepdish',
+        toppings: []
+    };
+    pizzaToppings["Hawaiian"].toppings.push('Pineapple');
+    pizzaToppings["Hawaiian"].toppings.push('Ham');
+
+    let toppings = document.getElementsByName('Topping');
+    let submitPizza = document.getElementById("SubmitPizza")
+    submitPizza.onclick = (e) => {
+        let count = countSelected(toppings);
+        if (count < 2) {
+            e.preventDefault();
+            return false;
+        }
+    }
+
+    let pizzas = document.getElementsByName('Pizza');
+    for (let pizza of pizzas) {
+        pizza.parentElement.onclick = () => {
+            clearOptions('Crust');
+            clearOptions('Topping');
+            let id = pizza.id;
+            switch (id) {
+                case 'Custom':
+                    break;
+                default:
+                    let crustEl = document.getElementById(pizzaToppings[id].crust);
+                    crustEl.setAttribute('checked', 'checked');
+                    crustEl.parentElement.classList.add('active');
+
+                    for (let topping of pizzaToppings[id].toppings) {
+                        let toppingEl = document.getElementById(topping);
+                        toppingEl.setAttribute('checked', 'checked');
+                        toppingEl.parentElement.classList.add('active');
+                    }
+                    break;
+            }
+        };
+    }
+
+    for (let topping of toppings) {
+        topping.parentElement.onclick = (e) => {
+            if (topping.checked) {
+                return;
+            }
+            let count = countSelected(toppings);
+            if (count >= 5) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        };
+    }
+
+    function countSelected(items) {
+        let count = 0;
+        for (let item of items) {
+            if (item.checked) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    function clearOptions(name) {
+        let items = document.getElementsByName(name);
+        for (let item of items) {
+            item.removeAttribute('checked');
+            item.parentElement.classList.remove('active');
+        }
+    }
+</script>

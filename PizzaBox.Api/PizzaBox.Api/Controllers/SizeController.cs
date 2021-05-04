@@ -23,7 +23,7 @@ namespace PizzaBox.Api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<ASize> Get()
+        public ActionResult<List<ASize>> Get()
         {
             try
             {

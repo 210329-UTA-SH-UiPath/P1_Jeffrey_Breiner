@@ -1,0 +1,81 @@
+﻿@model IEnumerable<PizzaBox.FrontEnd.Models.SalesReport>
+
+@{
+    ViewData["Title"] = "SalesReport";
+}
+
+<h1>SalesReport</h1>
+
+<p>
+    @Html.ActionLink("Weekly", "SalesReport", "FEStore", new { daysAgo = 7 }, new { @class = "btn btn-primary" })
+</p>
+<p>
+    @Html.ActionLink("Monthly", "SalesReport", "FEStore", new { daysAgo = 30 }, new { @class = "btn btn-primary" })
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Item)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Revenue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pizzas)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                $@Html.DisplayFor(modelItem => item.Revenue)
+            </td>
+            <td>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Item)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Quantity)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Revenue)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pizza in item.Pizzas)
+        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => pizza.Item)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => pizza.Quantity)
+                            </td>
+                            <td>
+                                $@Html.DisplayFor(modelItem => pizza.Revenue)
+                            </td>
+                        </tr>
+        }
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

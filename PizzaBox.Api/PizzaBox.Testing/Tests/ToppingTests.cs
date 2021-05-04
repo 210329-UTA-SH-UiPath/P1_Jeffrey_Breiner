@@ -15,7 +15,7 @@ namespace PizzaBox.Testing.Tests
             var actual = sut.Name;
 
             // assert
-            Assert.Equal(actual, "Bacon");
+            Assert.Equal("Bacon", actual);
         }
         [Fact]
         public void Test_PineappleName()
@@ -27,7 +27,7 @@ namespace PizzaBox.Testing.Tests
             var actual = sut.Name;
 
             // assert
-            Assert.Equal(actual, "Pineapple (the best toping)");
+            Assert.Equal("Pineapple (the best toping)", actual);
         }
     }
 }

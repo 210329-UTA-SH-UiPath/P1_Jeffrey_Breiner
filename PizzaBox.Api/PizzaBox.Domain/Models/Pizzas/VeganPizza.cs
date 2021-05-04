@@ -11,19 +11,20 @@ namespace PizzaBox.Domain.Models.Pizzas
     /// </summary>
     public class VeganPizza : APizza
     {
-        public VeganPizza()
+        public VeganPizza(ASize size)
         {
             Name = "Vegan (Abomination) Pizza";
             PIZZA = PIZZAS.VEGAN;
+            AddSize(size);
         }
         public override void AddCrust()
         {
             Crust = new ThinCrust();
         }
 
-        public override void AddSize()
+        public override void AddSize(ASize size)
         {
-            Size = new SmallSize();
+            Size = size;
         }
 
         public override void AddToppings()

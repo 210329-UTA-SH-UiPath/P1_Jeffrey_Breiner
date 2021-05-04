@@ -30,6 +30,18 @@ namespace PizzaBox.Storing.Repositories
             return context.DBCrusts.Select(mapperCrust.Map).ToList();
         }
 
+        public ACrust GetByCRUST(CRUSTS CRUST)
+        {
+            var dbCrust = context.DBCrusts.FirstOrDefault(crust => crust.CRUST == CRUST);
+
+            if (dbCrust is null)
+            {
+                return null;
+            }
+
+            return mapperCrust.Map(dbCrust);
+        }
+
         public ACrust GetById(int id)
         {
             var dbCrust = context.DBCrusts.FirstOrDefault(crust => crust.ID == id);

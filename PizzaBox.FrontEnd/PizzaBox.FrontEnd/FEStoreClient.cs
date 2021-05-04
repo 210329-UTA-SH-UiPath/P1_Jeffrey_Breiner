@@ -1,4 +1,5 @@
-﻿using PizzaBox.FrontEnd.Models;
+﻿using IO.Swagger.Model;
+using PizzaBox.FrontEnd.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace PizzaBox.FrontEnd
     public class FEStoreClient
     {
         static string url = "https://localhost:44368/api/";
-        static public IEnumerable<FEStore> GetStores()
+        static public IEnumerable<AStore> GetStores()
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri(url);
@@ -21,7 +22,7 @@ namespace PizzaBox.FrontEnd
 
             if (result.IsSuccessStatusCode)
             {
-                var readTask = result.Content.ReadAsAsync<FEStore[]>();
+                var readTask = result.Content.ReadAsAsync<AStore[]>();
                 readTask.Wait();
 
                 return readTask.Result;

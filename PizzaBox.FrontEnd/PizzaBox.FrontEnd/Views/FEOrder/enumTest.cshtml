@@ -1,0 +1,50 @@
+﻿@model IO.Swagger.Model.APizza
+
+@{
+    ViewData["Title"] = "enumTest";
+}
+
+<h1>enumTest</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Size
+            </th>
+            <th>
+                Crust
+            </th>
+            <th>
+                Toppings
+            </th>
+            <th>
+                Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.Size.Name - $@Model.Size.Price
+            </td>
+            <td>
+                @Model.Crust.Name - $@Model.Crust.Price
+            </td>
+            <td>
+                @foreach (var topping in Model.Toppings)
+                {
+                    @(topping.Name+" - $"+topping.Price) <br />
+                }
+            </td>
+            <td>
+                $@Model.Price
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

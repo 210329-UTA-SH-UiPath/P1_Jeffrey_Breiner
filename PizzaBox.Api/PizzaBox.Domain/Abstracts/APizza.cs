@@ -20,7 +20,7 @@ namespace PizzaBox.Domain.Abstracts
     /// Pizza object. Contains Crust, Size, and a list of Toppings.
     /// Also contains functions to add those elements.
     /// </summary>
-    public abstract class APizza
+    public class APizza
     {
         public string Name { get; set; }
         public ACrust Crust { get; set; }
@@ -30,9 +30,14 @@ namespace PizzaBox.Domain.Abstracts
         public PIZZAS PIZZA { get; set; }
         public int ID { get; set; }
 
-        protected APizza()
+        public APizza()
         {
-            Factory();
+            Factory(null);
+        }
+
+        protected APizza(ASize size)
+        {
+            Factory(size);
         }
 
         protected APizza(ACrust crust, ASize size, List<ATopping> toppings)
@@ -40,20 +45,29 @@ namespace PizzaBox.Domain.Abstracts
 
         }
 
-        private void Factory()
+        private void Factory(ASize size)
         {
             Toppings = new List<ATopping>();
 
             AddCrust();
-            AddSize();
+            AddSize(size);
             AddToppings();
         }
 
-        public abstract void AddCrust();
+        public virtual void AddCrust()
+        {
 
-        public abstract void AddSize();
+        }
 
-        public abstract void AddToppings();
+        public virtual void AddSize(ASize size)
+        {
+
+        }
+
+        public virtual void AddToppings()
+        {
+
+        }
 
         public virtual decimal CalculatePrice()
         {

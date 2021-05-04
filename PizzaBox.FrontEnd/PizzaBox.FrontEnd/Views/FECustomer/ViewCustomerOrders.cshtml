@@ -1,0 +1,33 @@
+﻿@model IO.Swagger.Model.Customer
+
+@{
+    if (ViewBag.ErrorMessage != null)
+    {
+    <p class="alert-warning">@ViewBag.ErrorMessage</p>
+    }
+}
+@{
+    ViewData["Title"] = "Enter Customer Name";
+}
+
+<h1>Enter Customer Name</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("GetOrdersByCustomer", "FEOrder", FormMethod.Post))
+        {
+        <label asp-for="Name" class="control-label"></label>
+        <br />
+        @Html.TextBoxFor(model => model.Name)
+        <br />
+        <br />
+        <input type="submit" value="Enter" class="btn btn-primary" />
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

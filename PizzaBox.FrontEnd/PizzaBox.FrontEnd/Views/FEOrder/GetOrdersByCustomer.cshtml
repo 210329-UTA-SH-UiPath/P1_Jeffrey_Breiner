@@ -1,0 +1,102 @@
+﻿@model IEnumerable<IO.Swagger.Model.Order>
+
+@{
+    ViewData["Title"] = "GetOrdersByCustomer";
+}
+
+<h1>GetOrdersByCustomer</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                Store
+            </th>
+            <th>
+                Customer Name
+            </th>
+            <th>
+                Price Total
+            </th>
+            <th>
+                Time Stamp
+            </th>
+            <th>
+                Pizzas
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Store.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.Name)
+            </td>
+            <td>
+                $@Html.DisplayFor(modelItem => item.PriceTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeStamp)
+            </td>
+            <td>
+                @foreach (var pizza in item.Pizza)
+                    {
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Size
+                            </th>
+                            <th>
+                                Crust
+                            </th>
+                            <th>
+                                Toppings
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @pizza.Size.Name - $@pizza.Size.Price
+                            </td>
+                            <td>
+                                @pizza.Crust.Name - $@pizza.Crust.Price
+                            </td>
+                            <td>
+                                @foreach (var topping in pizza.Toppings)
+                                        {
+                                @(topping.Name+" - $"+topping.Price)  <br />
+                                        }
+                            </td>
+                            <td>
+                                $@pizza.Price
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                    }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

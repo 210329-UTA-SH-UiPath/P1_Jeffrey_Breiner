@@ -18,6 +18,14 @@ namespace PizzaBox.Storing.Entities.EntityModels
     /// </summary>
     public class DBOrder
     {
+        public DBOrder()
+        {
+            //DBStore = new DBStore();
+            //DBCustomer = new DBCustomer();
+            TimeStamp = new DateTime();
+            DBPizzas = new List<DBPizza>();
+        }
+
         [Key]
         public int ID { get; set; }
         [Required]
@@ -25,7 +33,7 @@ namespace PizzaBox.Storing.Entities.EntityModels
         [Required]
         public DBCustomer DBCustomer { get; set; }
         [Required]
-        public virtual List<DBPizza> Pizzas { get; set; }
+        public virtual List<DBPizza> DBPizzas { get; set; }
         [Required]
         public decimal? PriceTotal { get; set; }
         [Required]

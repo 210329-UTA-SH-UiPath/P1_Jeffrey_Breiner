@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using IO.Swagger.Model;
+using Newtonsoft.Json;
 using PizzaBox.FrontEnd.Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace PizzaBox.FrontEnd
     public class FECrustClient
     {
         static string url = "https://localhost:44368/api/";
-        static public IEnumerable<FECrust> GetCrusts()
+        static public IEnumerable<ACrust> GetCrusts()
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri(url);
@@ -23,7 +24,7 @@ namespace PizzaBox.FrontEnd
 
             if (result.IsSuccessStatusCode)
             {
-                var readTask = result.Content.ReadAsAsync<FECrust[]>();
+                var readTask = result.Content.ReadAsAsync<ACrust[]>();
                 readTask.Wait();
 
                 return readTask.Result;
@@ -34,7 +35,7 @@ namespace PizzaBox.FrontEnd
             }
         }
 
-        static public IEnumerable<FECrust> GetCrustById(int id)
+        static public IEnumerable<ACrust> GetCrustById(int id)
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri(url + id);
@@ -45,7 +46,7 @@ namespace PizzaBox.FrontEnd
 
             if (result.IsSuccessStatusCode)
             {
-                var readTask = result.Content.ReadAsAsync<FECrust[]>();
+                var readTask = result.Content.ReadAsAsync<ACrust[]>();
                 readTask.Wait();
 
                 return readTask.Result;
@@ -57,12 +58,12 @@ namespace PizzaBox.FrontEnd
 
         }
 
-        static public IEnumerable<FECrust> GetCrustTypes()
+        static public IEnumerable<ACrust> GetCrustTypes()
         {
-            return GetCrusts().GroupBy(crust => crust.CRUST).Select(first => first.First());
+            return GetCrusts().GroupBy(crust => crust.Crust).Select(first => first.First());
         }
 
-        static public async void AddCrust(FECrust crust)
+        static public async void AddCrust(ACrust crust)
         {
             var json = JsonConvert.SerializeObject(crust);
             var data = new StringContent(json, Encoding.UTF8, "application/json");

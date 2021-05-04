@@ -1,4 +1,5 @@
-﻿using PizzaBox.FrontEnd.Models;
+﻿using IO.Swagger.Model;
+using PizzaBox.FrontEnd.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace PizzaBox.FrontEnd
     public class FESizeClient
     {
         static string url = "https://localhost:44368/api/";
-        static public IEnumerable<FESize> GetSizes()
+        static public IEnumerable<ASize> GetSizes()
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri(url);
@@ -21,7 +22,7 @@ namespace PizzaBox.FrontEnd
 
             if (result.IsSuccessStatusCode)
             {
-                var readTask = result.Content.ReadAsAsync<FESize[]>();
+                var readTask = result.Content.ReadAsAsync<ASize[]>();
                 readTask.Wait();
 
                 return readTask.Result;
@@ -32,9 +33,9 @@ namespace PizzaBox.FrontEnd
             }
         }
 
-        static public IEnumerable<FESize> GetSizeTypes()
+        static public IEnumerable<ASize> GetSizeTypes()
         {
-            return GetSizes().GroupBy(size => size.SIZE).Select(first => first.First());
+            return GetSizes().GroupBy(size => size.Size).Select(first => first.First());
         }
     }
 }

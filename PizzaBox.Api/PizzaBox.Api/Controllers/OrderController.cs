@@ -23,7 +23,7 @@ namespace PizzaBox.Api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Order> Get()
+        public ActionResult<List<Order>> Get()
         {
             try
             {
@@ -66,7 +66,7 @@ namespace PizzaBox.Api.Controllers
                 else
                 {
                     repository.Add(order);
-                    return CreatedAtAction(nameof(Get), new { id = order.ID }, order);
+                    return Ok();
                 }
             }
         }

@@ -16,7 +16,7 @@ namespace PizzaBox.Domain.Models.Components
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ACrust : AComponent
+    public class ACrust : AComponent
     {
         public CRUSTS CRUST { get; set; }
     }

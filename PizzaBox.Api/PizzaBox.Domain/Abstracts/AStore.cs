@@ -15,7 +15,7 @@ namespace PizzaBox.Domain.Abstracts
     /// <summary>
     /// Represents the Store Abstract Class
     /// </summary>
-    public abstract class AStore
+    public class AStore
     {
         public string Name { get; set; }
         public int ID { get; set; }
@@ -24,7 +24,7 @@ namespace PizzaBox.Domain.Abstracts
         /// <summary>
         /// 
         /// </summary>
-        protected AStore()
+        public AStore()
         {
             ID = -1;
         }

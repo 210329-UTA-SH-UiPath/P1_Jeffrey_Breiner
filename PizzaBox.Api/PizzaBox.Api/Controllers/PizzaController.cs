@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzaBox.Domain.Abstracts;
+using PizzaBox.Domain.Models.Components;
+using PizzaBox.Domain.Models.Crusts;
+using PizzaBox.Domain.Models.Pizzas;
+using PizzaBox.Domain.Models.Sizes;
+using PizzaBox.Domain.Models.Toppings;
 using PizzaBox.Storing.Repositories;
 using System;
 using System.Collections.Generic;
@@ -23,7 +28,7 @@ namespace PizzaBox.Api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<APizza> Get()
+        public ActionResult<List<APizza>> Get()
         {
             try
             {

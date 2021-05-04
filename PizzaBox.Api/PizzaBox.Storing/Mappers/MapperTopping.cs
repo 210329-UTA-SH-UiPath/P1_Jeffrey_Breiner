@@ -64,18 +64,21 @@ namespace PizzaBox.Storing.Mappers
         /// <returns></returns>
         public DBTopping Map(ATopping model, PizzaDbContext context, bool update = false)
         {
-            DBTopping dbTopping = context.DBToppings.FirstOrDefault(topping => topping.ID == model.ID) ?? new DBTopping();
+            DBTopping dbTopping = context.DBToppings.FirstOrDefault(topping => topping.TOPPING == model.TOPPING) ?? new DBTopping();
 
             if (dbTopping.ID != 0 && !update)
             {
                 return dbTopping;
             }
+
             dbTopping.TOPPING = model.TOPPING;
             dbTopping.Price = model.Price;
+
             if (dbTopping.ID == 0)
             {
                 context.DBToppings.Add(dbTopping);
             }
+
             return dbTopping;
         }
     }

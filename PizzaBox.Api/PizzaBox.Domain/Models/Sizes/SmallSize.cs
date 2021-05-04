@@ -7,7 +7,7 @@ namespace PizzaBox.Domain.Models.Sizes
         public SmallSize()
         {
             Name = "Small";
-            Price = 5m;
+            Price = 3m;
             SIZE = SIZES.SMALL;
         }
     }

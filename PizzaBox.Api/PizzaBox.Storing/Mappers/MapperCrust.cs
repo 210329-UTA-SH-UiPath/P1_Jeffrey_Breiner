@@ -47,9 +47,14 @@ namespace PizzaBox.Storing.Mappers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        /// 3 scenarios:
+        /// 1: passing crust with no id but has CRUST - intended result from placing an order, do not add anything to db
+        /// 2: passing crust with id and CRUST - intended for update. update flag should be true
+        /// 3: passing 
         public DBCrust Map(ACrust model, PizzaDbContext context, bool update = false)
         {
-            DBCrust dbCrust = context.DBCrusts.FirstOrDefault(crust => crust.ID == model.ID) ?? new DBCrust();
+            DBCrust dbCrust = context.DBCrusts.FirstOrDefault(crust => crust.CRUST == model.CRUST) ?? new DBCrust();
+
             if (dbCrust.ID != 0 && !update)
             {
                 return dbCrust;
@@ -62,6 +67,7 @@ namespace PizzaBox.Storing.Mappers
             {
                 context.DBCrusts.Add(dbCrust);
             }
+
             return dbCrust;
         }
     }

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PizzaBox.Client.Controllers;
-using PizzaBox.Client.Models;
 using PizzaBox.FrontEnd.Models;
 using System;
 using System.Collections.Generic;
@@ -9,47 +11,29 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace PizzaBox.FrontEnd.Controllers
-{
+{/*
     public class FEPizzaController : Controller
     {
-        public IActionResult SelectPizzaType()
+        [HttpGet]
+        public IActionResult SalesReport(int daysAgo)
         {
-            var sessionOrder = Utils.GetCurrentOrder(HttpContext.Session);
-            var PIZZA = FEPizzaClient.GetPizzaTypes();
+            var APIStores = new StoreApi(new Configuration { BasePath = "https://localhost:44368/" });
+            var stores = APIStores.ApiStoreGet();
+            var APIOrders = new OrderApi(new Configuration { BasePath = "https://localhost:44368/" });
+            var orders = APIOrders.ApiOrderGet();
+            var APIPizzas = new PizzaApi(new Configuration { BasePath = "https://localhost:44368/" });
+            var pizzas = APIPizzas.ApiPizzaGet();
+            List<SalesReport> summary = pizzas.Join(orders, pizza => pizza.OrderID, order => order.Id, (pizza, order) => new { Pizza = pizza, Order = order })
+                .Where(row => (DateTime.Now - (DateTime)row.Order.TimeStamp).TotalDays <= daysAgo)
+                .GroupBy(sales1 => sales1.Pizza).Select(sales2 => new SalesReport
+                {
+                    Item = Enum.GetName<PIZZAS>(sales2.First().Pizza.Pizza),
+                    Quantity = sales2.Count(),
+                    Revenue = sales2.Sum(sales => (double)sales.Pizza.Price)
+                }).ToList();
 
-            ViewBag.PIZZA = new SelectList(PIZZA, "PIZZA", "Name");
-            sessionOrder.Pizza.Add(new FEPizza());
-            Utils.SaveOrder(HttpContext.Session, sessionOrder);
 
-            return View(new FEOrderHolding());
+            return View(summary);
         }
-
-        [HttpPost]
-        public IActionResult PizzaTypeSelected(FEOrderHolding orderHolding)
-        {
-            var dbPizza = FEPizzaClient.GetPizzas().FirstOrDefault(pizza => pizza.PIZZA == orderHolding.PIZZA);
-
-            if (dbPizza is null)
-            {
-                return BadRequest("The type of pizza that you have selected doesn't exist in the database");
-            }
-
-            var sessionOrder = Utils.GetCurrentOrder(HttpContext.Session);
-            var lastSelectedPizza = sessionOrder.Pizza.Last();
-
-            lastSelectedPizza.Name = dbPizza.Name;
-            lastSelectedPizza.PIZZA = dbPizza.PIZZA;
-            lastSelectedPizza.Crust = dbPizza.Crust;
-            lastSelectedPizza.Size = dbPizza.Size;
-            lastSelectedPizza.Toppings = dbPizza.Toppings;
-
-            if (lastSelectedPizza.PIZZA == PIZZAS.CUSTOM)
-            {
-                lastSelectedPizza.Toppings.Clear();
-            }
-
-            Utils.SaveOrder(HttpContext.Session, sessionOrder);
-            return RedirectToAction("SelectPizzaSize", "FEPizza");
-        }
-    }
+    }*/
 }

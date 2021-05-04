@@ -14,7 +14,7 @@ namespace PizzaBox.FrontEnd.Models
     public class FESize
     {
         public string Name { get; set; }
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
         public int ID { get; set; }
         public SIZES SIZE { get; set; }
     }

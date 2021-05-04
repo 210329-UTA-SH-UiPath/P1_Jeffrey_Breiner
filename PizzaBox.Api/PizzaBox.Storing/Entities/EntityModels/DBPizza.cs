@@ -20,6 +20,8 @@ namespace PizzaBox.Storing.Entities.EntityModels
         public DBPizza()
         {
             DBPlacedToppings = new List<DBPlacedTopping>();
+            //DBCrust = new DBCrust();
+            //DBSize = new DBSize();
         }
         [Key]
         public int ID { get; set; }

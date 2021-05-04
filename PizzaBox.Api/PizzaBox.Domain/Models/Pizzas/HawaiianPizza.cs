@@ -11,10 +11,11 @@ namespace PizzaBox.Domain.Models.Pizzas
     /// </summary>
     public class HawaiianPizza : APizza
     {
-        public HawaiianPizza()
+        public HawaiianPizza(ASize size)
         {
             Name = "Hawaiian Pizza";
             PIZZA = PIZZAS.HAWAIIAN;
+            AddSize(size);
         }
 
         public override void AddCrust()
@@ -22,9 +23,9 @@ namespace PizzaBox.Domain.Models.Pizzas
             Crust = new DeepDishCrust();
         }
 
-        public override void AddSize()
+        public override void AddSize(ASize size)
         {
-            Size = new LargeSize();
+            Size = size;
         }
 
         public override void AddToppings()

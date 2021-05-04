@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IO.Swagger.Model;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using PizzaBox.FrontEnd;
 using PizzaBox.FrontEnd.Models;
 
 namespace PizzaBox.Client.Controllers
@@ -21,18 +23,19 @@ namespace PizzaBox.Client.Controllers
             return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
         }
 
-        public static FEOrder GetCurrentOrder(ISession session)
+        public static Order GetCurrentOrder(ISession session)
         {
-            var order = GetObjectFromJson<FEOrder>(session, "order");
+            var order = GetObjectFromJson<Order>(session, "order");
             if (order is null)
             {
-                order = new FEOrder();
+                order = new Order();
             }
             return order;
         }
 
-        public static void SaveOrder(ISession session, FEOrder order)
+        public static void SaveOrder(ISession session, Order order)
         {
+            order.CalculateOrderPrice();
             SetObjectAsJson(session, "order", order);
         }
     }

@@ -26,7 +26,11 @@ namespace PizzaBox.Storing.Repositories
         {
             List<APizza> pizzas = new List<APizza>();
             context.DBPizzas.Include(pizza => pizza.DBCrust).Include(pizza => pizza.DBSize).Include(pizza => pizza.DBPlacedToppings)
-              .AsEnumerable().GroupBy(pizza => pizza.PIZZA).Select(pizza => pizza.First()).ToList().ForEach(pizza => pizzas.Add(mapperPizza.Map(pizza)));
+              .AsEnumerable().GroupBy(pizza => pizza.PIZZA).Select(pizza => pizza.First()).ToList()
+              .ForEach(pizza => pizzas.Add(mapperPizza.Map(pizza)));
+            /*
+            context.DBPizzas.Include(pizza => pizza.DBCrust).Include(pizza => pizza.DBSize).Include(pizza => pizza.DBPlacedToppings)
+              .AsEnumerable().ToList().ForEach(pizza => pizzas.Add(mapperPizza.Map(pizza)));*/
             return pizzas;
         }
 

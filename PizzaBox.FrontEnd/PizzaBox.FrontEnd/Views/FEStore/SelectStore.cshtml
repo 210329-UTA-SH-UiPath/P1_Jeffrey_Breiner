@@ -1,4 +1,4 @@
-﻿@model PizzaBox.FrontEnd.Models.FEStore
+﻿@model IO.Swagger.Model.AStore
 
 @{
     ViewData["Title"] = "Select Store";
@@ -11,7 +11,7 @@
     <div class="col-md-4">
         <label>Store to Order From:</label>
         <form asp-controller="FEStore" asp-action="GetSelectedStore" method="post">
-            <select asp-for="ID" asp-items="ViewBag.Stores"></select>
+            <select asp-for="Id" asp-items="ViewBag.Stores"></select>
             <input type="submit" value="Choose" class="btn btn-primary"/>
         </form>
     </div>

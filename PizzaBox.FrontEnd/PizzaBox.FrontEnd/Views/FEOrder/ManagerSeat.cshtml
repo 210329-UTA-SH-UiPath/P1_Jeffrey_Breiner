@@ -1,16 +1,24 @@
-﻿@model IEnumerable<PizzaBox.FrontEnd.Models.FEOrder>
+﻿@model IEnumerable<IO.Swagger.Model.Order>
 
 @{
-    ViewData["Title"] = "ManagerSeat";
+    ViewData["Title"] = "Manager's Seat";
 }
 
-<h1>ManagerSeat</h1>
+<h1>Manager's Seat</h1>
+
+
+<p>
+    @Html.ActionLink("Store Report", "SalesReport", "FEStore", new {daysAgo = 7}, new { @class = "btn btn-primary" })
+</p>
+<p>
+    @Html.ActionLink("Orders By Customer", "ViewCustomerOrders", "FECustomer", null, new { @class = "btn btn-primary" })
+</p>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ID)
+                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
                 Store
@@ -33,70 +41,70 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Store.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Customer.Name)
-                </td>
-                <td>
-                    $@Html.DisplayFor(modelItem => item.priceTotal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimeStamp)
-                </td>
-                <td>
-                    @foreach (var pizza in item.Pizza)
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Store.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.Name)
+            </td>
+            <td>
+                $@Html.DisplayFor(modelItem => item.PriceTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeStamp)
+            </td>
+            <td>
+                @foreach (var pizza in item.Pizza)
                     {
 
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Size
-                                    </th>
-                                    <th>
-                                        Crust
-                                    </th>
-                                    <th>
-                                        Toppings
-                                    </th>
-                                    <th>
-                                        Price
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        @pizza.Size.Name - $@pizza.Size.Price
-                                    </td>
-                                    <td>
-                                        @pizza.Crust.Name - $@pizza.Crust.Price
-                                    </td>
-                                    <td>
-                                        @foreach (var topping in pizza.Toppings)
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Size
+                            </th>
+                            <th>
+                                Crust
+                            </th>
+                            <th>
+                                Toppings
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @pizza.Size.Name - $@pizza.Size.Price
+                            </td>
+                            <td>
+                                @pizza.Crust.Name - $@pizza.Crust.Price
+                            </td>
+                            <td>
+                                @foreach (var topping in pizza.Toppings)
                                         {
-                                            @(topping.Name+" - $"+topping.Price) <br />
+                                @(topping.Name+" - $"+topping.Price)  <br />
                                         }
-                                    </td>
-                                    <td>
-                                        $@pizza.Price
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                            </td>
+                            <td>
+                                $@pizza.Price
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                     }
-                </td>
-                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "GetById", new { id = item.ID }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-            </tr>
+            </td>
+            @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "GetById", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+        </tr>
         }
     </tbody>
 </table>

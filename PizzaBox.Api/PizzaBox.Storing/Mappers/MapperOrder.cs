@@ -25,7 +25,7 @@ namespace PizzaBox.Storing.Mappers
             Order order = new Order();
             order.Customer = mapperCustomer.Map(entity.DBCustomer);
             List<APizza> pizzas = new List<APizza>();
-            entity.Pizzas.ToList().ForEach(pizza => pizzas.Add(mapperPizza.Map(pizza)));
+            entity.DBPizzas.ToList().ForEach(pizza => pizzas.Add(mapperPizza.Map(pizza)));
 
             order.Pizza = pizzas;
             order.Store = mapperStore.Map(entity.DBStore);
@@ -44,22 +44,22 @@ namespace PizzaBox.Storing.Mappers
         public DBOrder Map(Order model, PizzaDbContext context, bool update = false)
         {
             DBOrder dbOrder = context.DBOrders.Include(order => order.DBCustomer).Include(order => order.DBStore)
-                .Include(order => order.Pizzas).ThenInclude(pizza => pizza.DBPlacedToppings).ThenInclude(pt => pt.Topping)
-                .Include(order => order.Pizzas).ThenInclude(pizza => pizza.DBSize).Include(order => order.Pizzas)
+                .Include(order => order.DBPizzas).ThenInclude(pizza => pizza.DBPlacedToppings).ThenInclude(placedTopping => placedTopping.Topping)
+                .Include(order => order.DBPizzas).ThenInclude(pizza => pizza.DBSize).Include(order => order.DBPizzas)
                 .ThenInclude(pizza => pizza.DBCrust).FirstOrDefault(order => order.ID == model.ID) ?? new DBOrder();
 
-            if (dbOrder.ID != 0 && update)
+            if (dbOrder.ID != 0 && !update)
             {
                 return dbOrder;
             }
 
             dbOrder.DBCustomer = mapperCustomer.Map(model.Customer, context, update);
-            dbOrder.Pizzas.Clear();
+            dbOrder.DBPizzas.Clear();
 
             foreach (APizza pizza in model.Pizza)
             {
                 var mappedPizza = mapperPizza.Map(pizza, context, update);
-                dbOrder.Pizzas.Add(mappedPizza);
+                dbOrder.DBPizzas.Add(mappedPizza);
             }
 
             dbOrder.DBStore = mapperStore.Map(model.Store, context, update);

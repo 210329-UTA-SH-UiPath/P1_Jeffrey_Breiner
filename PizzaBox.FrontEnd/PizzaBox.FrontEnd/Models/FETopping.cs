@@ -20,7 +20,7 @@ namespace PizzaBox.FrontEnd.Models
     public class FETopping
     {
         public string Name { get; set; }
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
         public int ID { get; set; }
         public TOPPINGS TOPPING { get; set; }
     }

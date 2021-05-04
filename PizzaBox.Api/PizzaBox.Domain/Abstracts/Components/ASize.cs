@@ -15,7 +15,7 @@ namespace PizzaBox.Domain.Models.Components
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ASize : AComponent
+    public class ASize : AComponent
     {
         public SIZES SIZE { get; set; }
     }

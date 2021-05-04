@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using PizzaBox.FrontEnd.Models;
-
+/*
 namespace PizzaBox.Client.Models
 {
     public class FEOrderHolding
@@ -21,4 +21,4 @@ namespace PizzaBox.Client.Models
         public SIZES SIZE { get; set; }
         public TOPPINGS TOPPING { get; set; }
     }
-}
+}*/

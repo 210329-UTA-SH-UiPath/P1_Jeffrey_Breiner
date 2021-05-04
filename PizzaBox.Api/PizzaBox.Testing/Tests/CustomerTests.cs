@@ -17,7 +17,7 @@ namespace PizzaBox.Testing.Tests
             var actual = sut.Name;
 
             // assert
-            Assert.Equal(actual, "yes");
+            Assert.Equal("yes", actual);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace PizzaBox.Testing.Tests
             var actual = sut.Name;
 
             // assert
-            Assert.Equal(actual, "BOGGLE!");
+            Assert.Equal("BOGGLE!", actual);
         }
     }
 }

@@ -1,3 +1,4 @@
+using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 using Xunit;
 
@@ -22,6 +23,21 @@ namespace PizzaBox.Testing.Tests
 
             // assert
             Assert.True(actual == "Chicago Store");
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        [Fact]
+        public void Test_StoreEnum()
+        {
+            // arrange
+            var sut = new NewYorkStore();
+
+            // act
+            var actual = sut.STORE;
+
+            // assert
+            Assert.True(actual == STORES.NEWYORK);
         }
     }
 }

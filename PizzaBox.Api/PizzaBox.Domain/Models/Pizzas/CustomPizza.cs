@@ -19,7 +19,7 @@ namespace PizzaBox.Domain.Models.Pizzas
 
         }
 
-        public override void AddSize()
+        public override void AddSize(ASize size)
         {
 
         }

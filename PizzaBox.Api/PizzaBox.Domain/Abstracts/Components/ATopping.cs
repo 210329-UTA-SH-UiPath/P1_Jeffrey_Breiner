@@ -21,7 +21,7 @@ namespace PizzaBox.Domain.Models.Components
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ATopping : AComponent
+    public class ATopping : AComponent
     {
         public TOPPINGS TOPPING { get; set; }
     }

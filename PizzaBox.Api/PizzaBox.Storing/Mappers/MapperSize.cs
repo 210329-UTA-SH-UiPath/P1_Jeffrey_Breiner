@@ -46,17 +46,21 @@ namespace PizzaBox.Storing.Mappers
         /// <returns></returns>
         public DBSize Map(ASize model, PizzaDbContext context, bool update = false)
         {
-            DBSize size = context.DBSizes.FirstOrDefault(size => size.ID == model.ID) ?? new DBSize();
+            DBSize size = context.DBSizes.FirstOrDefault(size => size.SIZE == model.SIZE) ?? new DBSize();
+
             if (size.ID != 0 && !update)
             {
                 return size;
             }
+
             size.SIZE = model.SIZE;
             size.Price = model.Price;
+
             if (size.ID == 0)
             {
                 context.DBSizes.Add(size);
             }
+
             return size;
         }
     }

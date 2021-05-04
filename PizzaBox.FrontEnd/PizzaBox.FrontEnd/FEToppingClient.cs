@@ -1,4 +1,5 @@
-﻿using PizzaBox.FrontEnd.Models;
+﻿using IO.Swagger.Model;
+using PizzaBox.FrontEnd.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace PizzaBox.FrontEnd
     public class FEToppingClient
     {
         static string url = "https://localhost:44368/api/";
-        static public IEnumerable<FETopping> GetToppings()
+        static public IEnumerable<ATopping> GetToppings()
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri(url);
@@ -21,7 +22,7 @@ namespace PizzaBox.FrontEnd
 
             if (result.IsSuccessStatusCode)
             {
-                var readTask = result.Content.ReadAsAsync<FETopping[]>();
+                var readTask = result.Content.ReadAsAsync<ATopping[]>();
                 readTask.Wait();
 
                 return readTask.Result;
@@ -32,9 +33,9 @@ namespace PizzaBox.FrontEnd
             }
         }
 
-        static public IEnumerable<FETopping> GetToppingTypes()
+        static public IEnumerable<ATopping> GetToppingTypes()
         {
-            return GetToppings().GroupBy(topping => topping.TOPPING).Select(first => first.First());
+            return GetToppings().GroupBy(topping => topping.Topping).Select(first => first.First());
         }
     }
 }

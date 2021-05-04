@@ -53,25 +53,25 @@ namespace PizzaBox.Api
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
-                    .Of<ACrust>("CRUSTS") // type property is only defined here
+                    .Of<ACrust>("CRUST")
                     .RegisterSubtype<DeepDishCrust>(CRUSTS.DEEPDISH)
                     .RegisterSubtype<StandardCrust>(CRUSTS.STANDARD)
                     .RegisterSubtype<StuffedCrust>(CRUSTS.STUFFED)
                     .RegisterSubtype<ThinCrust>(CRUSTS.THIN)
-                    .SerializeDiscriminatorProperty() // ask to serialize the type property
+                    .SerializeDiscriminatorProperty()
                     .Build());
 
                 options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
-                    .Of<APizza>("PIZZAS")
+                    .Of<APizza>("PIZZA")
                     .RegisterSubtype<CustomPizza>(PIZZAS.CUSTOM)
                     .RegisterSubtype<MeatPizza>(PIZZAS.MEAT)
                     .RegisterSubtype<HawaiianPizza>(PIZZAS.HAWAIIAN)
                     .RegisterSubtype<VeganPizza>(PIZZAS.VEGAN)
-                    .SerializeDiscriminatorProperty() // ask to serialize the type property
+                    .SerializeDiscriminatorProperty()
                     .Build());
 
                 options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
-                    .Of<ASize>("SIZES")
+                    .Of<ASize>("SIZE")
                     .RegisterSubtype<SmallSize>(SIZES.SMALL)
                     .RegisterSubtype<MediumSize>(SIZES.MEDIUM)
                     .RegisterSubtype<LargeSize>(SIZES.LARGE)
@@ -79,14 +79,14 @@ namespace PizzaBox.Api
                     .Build());
 
                 options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
-                    .Of<AStore>("STORES")
+                    .Of<AStore>("STORE")
                     .RegisterSubtype<NewYorkStore>(STORES.NEWYORK)
                     .RegisterSubtype<ChicagoStore>(STORES.CHICAGO)
                     .SerializeDiscriminatorProperty()
                     .Build());
 
                 options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
-                    .Of<ATopping>("TOPPINGS")
+                    .Of<ATopping>("TOPPING")
                     .RegisterSubtype<Bacon>(TOPPINGS.BACON)
                     .RegisterSubtype<Chicken>(TOPPINGS.CHICKEN)
                     .RegisterSubtype<ExtraCheese>(TOPPINGS.EXTRACHEESE)

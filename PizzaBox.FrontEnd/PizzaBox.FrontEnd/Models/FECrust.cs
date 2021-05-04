@@ -15,7 +15,7 @@ namespace PizzaBox.FrontEnd.Models
     public class FECrust
     {
         public string Name { get; set; }
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
         public int ID { get; set; }
         public CRUSTS CRUST { get; set; }
     }
