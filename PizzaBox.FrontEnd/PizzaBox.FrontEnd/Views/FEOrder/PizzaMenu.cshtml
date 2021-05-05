@@ -7,34 +7,6 @@
     }
 }
 <p>
-    @*@using (Html.BeginForm("CheckCustomerName", "FECustomer", FormMethod.Post))
-        {
-            <label asp-for="Pizza" class="control-label"></label>
-            <br />
-            @{
-                List<SelectListItem> listItems = new List<SelectListItem>();
-                listItems.Add(new SelectListItem
-                {
-                    Text = "Hawaiian Pizza",
-                    Value = "PIZZAS.HAWAIIAN"
-                });
-                listItems.Add(new SelectListItem
-                {
-                    Text = "Meat Pizza",
-                    Value = "PIZZAS.MEAT",
-                    Selected = true
-                });
-                listItems.Add(new SelectListItem
-                {
-                    Text = "Vegan Pizza",
-                    Value = "PIZZAS.VEGAN"
-                });
-            }
-            @Html.DropDownList("yourDropName", listItems, new { @class = "form-control" })
-            <br />
-            <br />
-            <input type="submit" value="Enter" class="btn btn-primary" />
-        }*@
 </p>
 @using (Html.BeginForm("AddPizza", "FEOrder", FormMethod.Post))
 {
@@ -191,6 +163,7 @@
     pizzaToppings["Hawaiian"].toppings.push('Ham');
 
     let toppings = document.getElementsByName('Topping');
+    let crusts = document.getElementsByName('Crust');
     let submitPizza = document.getElementById("SubmitPizza")
     submitPizza.onclick = (e) => {
         let count = countSelected(toppings);
@@ -211,12 +184,12 @@
                     break;
                 default:
                     let crustEl = document.getElementById(pizzaToppings[id].crust);
-                    crustEl.setAttribute('checked', 'checked');
+                    crustEl.checked = true;
                     crustEl.parentElement.classList.add('active');
 
                     for (let topping of pizzaToppings[id].toppings) {
                         let toppingEl = document.getElementById(topping);
-                        toppingEl.setAttribute('checked', 'checked');
+                        toppingEl.checked = true;
                         toppingEl.parentElement.classList.add('active');
                     }
                     break;
@@ -226,6 +199,7 @@
 
     for (let topping of toppings) {
         topping.parentElement.onclick = (e) => {
+            switchToCustom();
             if (topping.checked) {
                 return;
             }
@@ -236,6 +210,12 @@
                 return false;
             }
         };
+    }
+
+    for (let crust of crusts) {
+        crust.parentElement.onclick = (e) => {
+            switchToCustom();
+        }
     }
 
     function countSelected(items) {
@@ -251,8 +231,15 @@
     function clearOptions(name) {
         let items = document.getElementsByName(name);
         for (let item of items) {
-            item.removeAttribute('checked');
+            item.checked = false;
             item.parentElement.classList.remove('active');
         }
+    }
+
+    function switchToCustom() {
+        clearOptions('Pizza');
+        let pizzaEL = document.getElementById('Custom');
+        pizzaEL.checked = true;
+        pizzaEL.parentElement.classList.add('active');
     }
 </script>
