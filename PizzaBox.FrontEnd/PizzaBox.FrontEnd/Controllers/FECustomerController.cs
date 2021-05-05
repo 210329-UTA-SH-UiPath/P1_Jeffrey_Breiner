@@ -15,6 +15,8 @@ namespace PizzaBox.FrontEnd.Controllers
     {
         public IActionResult EnterCustomerName()
         {
+            var sessionOrder = Utils.GetCurrentOrder(HttpContext.Session);
+            HttpContext.Session.Clear();
             return View(new Customer());
         }
 

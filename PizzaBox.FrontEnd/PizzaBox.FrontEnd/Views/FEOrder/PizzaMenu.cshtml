@@ -125,7 +125,7 @@
                     @toppingString
                 </td>
                 <td>
-                    @item.Price
+                    $@item.Price
                 </td>
                 <td>
                     @Html.ActionLink("Remove", "Remove", "FEOrder", new { Index = i })
@@ -136,7 +136,7 @@
 </table>
 
 <div>
-    <label>Total Price: @Model.PriceTotal</label>
+    <label>Total Price: $@Model.PriceTotal</label>
     <br />
 </div>
 <script>
